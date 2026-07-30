@@ -105,7 +105,7 @@ public class LibraryWindow : Window
         IFramework frameworkService,
         SettingsWindow settingsWindow,
         IServiceProvider serviceProvider)
-        : base($"{Brio.Name} Library###brio_library_window")
+        : base($"{Brio.Name} 資料庫###brio_library_window")
     {
         this.Namespace = "brio_library_namespace";
 
@@ -347,11 +347,11 @@ public class LibraryWindow : Window
             {
                 ImGui.SameLine();
 
-                if(ImBrio.Button("Browse for File", FontAwesomeIcon.FolderOpen, new Vector2(155, 0)))
+                if(ImBrio.Button("瀏覽檔案", FontAwesomeIcon.FolderOpen, new Vector2(155, 0)))
                     DoBrowse();
 
                 if(ImGui.IsItemHovered())
-                    ImGui.SetTooltip("Browse for a file");
+                    ImGui.SetTooltip("瀏覽檔案");
             }
 
             ImGui.SameLine();
@@ -455,7 +455,7 @@ public class LibraryWindow : Window
                             }
 
                             if(ImGui.IsItemHovered())
-                                ImGui.SetTooltip(isFavorite ? "Remove from favorites" : "Add to favorites");
+                                ImGui.SetTooltip(isFavorite ? "從最愛移除" : "加入最愛");
 
                             ImGui.SameLine();
                         }
@@ -471,7 +471,7 @@ public class LibraryWindow : Window
 
                     if(isPoseModal)
                     {
-                        if(ImBrio.Button("##importPoseOptionButton", FontAwesomeIcon.Cog, new Vector2(25, 0), hoverText: "Import Options"))
+                        if(ImBrio.Button("##importPoseOptionButton", FontAwesomeIcon.Cog, new Vector2(25, 0), hoverText: "匯入選項"))
                         {
                             ImGui.OpenPopup("import_options_popup_lib");
                         }
@@ -491,7 +491,7 @@ public class LibraryWindow : Window
                     if(doDisable)
                         ImGui.BeginDisabled();
 
-                    if(ImBrio.Button("Import", FontAwesomeIcon.Check, new Vector2(100, 0)))
+                    if(ImBrio.Button("匯入", FontAwesomeIcon.Check, new Vector2(100, 0)))
                     {
                         if(_selected != null)
                         {
@@ -504,7 +504,7 @@ public class LibraryWindow : Window
 
                     ImGui.SameLine();
 
-                    if(ImBrio.Button("Cancel", FontAwesomeIcon.Times, new Vector2(100, 0)))
+                    if(ImBrio.Button("取消", FontAwesomeIcon.Times, new Vector2(100, 0)))
                     {
                         Close();
                     }
@@ -695,7 +695,7 @@ public class LibraryWindow : Window
 
                         if(ImGui.IsItemHovered())
                         {
-                            ImGui.SetTooltip("Scan all library sources and refresh the view");
+                            ImGui.SetTooltip("掃描所有資料庫來源並重新整理");
                         }
                     }
                 }
@@ -787,7 +787,7 @@ public class LibraryWindow : Window
 
                             using(ImRaii.PushColor(ImGuiCol.FrameBg, 0x000000))
                             {
-                                if(ImGui.InputText("###library_search_input", ref _searchText,  256, 
+                                if(ImGui.InputText("###library_search_input", ref _searchText, 256,
                                     ImGuiInputTextFlags.NoHorizontalScroll | ImGuiInputTextFlags.NoUndoRedo
                                     | ImGuiInputTextFlags.CallbackAlways,
                                     OnSearchFunc))
@@ -918,7 +918,7 @@ public class LibraryWindow : Window
 
                         if(trimmedTags > 0)
                         {
-                            ImBrio.Text($"plus {trimmedTags} more tags...", 0x88FFFFFF);
+                            ImBrio.Text($"以及另外 {trimmedTags} 個標籤……", 0x88FFFFFF);
                         }
 
                         hasContent = true;
@@ -927,7 +927,7 @@ public class LibraryWindow : Window
                     // quick tag
                     if(availableTags.Count >= 1)
                     {
-                        ImBrio.Text($"Press TAB to filter by tag \"{availableTags[0].DisplayName}\"", 0x88FFFFFF);
+                        ImBrio.Text($"按 Tab 依「{availableTags[0].DisplayName}」標籤篩選", 0x88FFFFFF);
                         hasContent = true;
 
                         if(ImGui.IsKeyPressed(ImGuiKey.Tab))
@@ -940,7 +940,7 @@ public class LibraryWindow : Window
 
                     if(!hasContent)
                     {
-                        ImBrio.Text($"Start typing to search...", 0x88FFFFFF);
+                        ImBrio.Text("輸入文字即可搜尋……", 0x88FFFFFF);
                     }
                 }
 
@@ -1062,7 +1062,7 @@ public class LibraryWindow : Window
 
     private void DrawFooter()
     {
-        if(ImBrio.Button("Add new source", FontAwesomeIcon.None, new Vector2(100, 0)))
+        if(ImBrio.Button("新增來源", FontAwesomeIcon.None, new Vector2(100, 0)))
         {
             if(_isModal)
             {
@@ -1082,17 +1082,17 @@ public class LibraryWindow : Window
         }
 
         if(ImGui.IsItemHovered())
-            ImGui.SetTooltip($"Icon Size: {size}px");
+            ImGui.SetTooltip($"圖示大小：{size}px");
 
         ImGui.SameLine();
 
         if(_isRescanning || _libraryManager.IsScanning)
         {
-            ImGui.TextDisabled("Scanning...");
+            ImGui.TextDisabled("正在掃描……");
         }
         else
         {
-            ImGui.TextDisabled($"found {_currentEntries?.Count().ToString("N0")} items in {_lastRefreshTimeMs}ms");
+            ImGui.TextDisabled($"找到 {_currentEntries?.Count().ToString("N0")} 個項目，耗時 {_lastRefreshTimeMs} 毫秒");
         }
     }
 

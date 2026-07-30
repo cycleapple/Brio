@@ -23,7 +23,7 @@ public class PosingTransformWindow : Window
 
     private Matrix4x4? _trackingMatrix;
 
-    public PosingTransformWindow(EntityManager entityManager, CameraService cameraService, PosingService posingService) : base($"{Brio.Name} - Transform###brio_transform_window", ImGuiWindowFlags.AlwaysVerticalScrollbar)
+    public PosingTransformWindow(EntityManager entityManager, CameraService cameraService, PosingService posingService) : base($"{Brio.Name} - 變換###brio_transform_window", ImGuiWindowFlags.AlwaysVerticalScrollbar)
     {
         Namespace = "brio_transform_namespace";
 
@@ -54,7 +54,7 @@ public class PosingTransformWindow : Window
             return;
         }
 
-        WindowName = $"Transform - {posing.Entity.FriendlyName}###brio_transform_window";
+        WindowName = $"變換 - {posing.Entity.FriendlyName}###brio_transform_window";
 
         PosingEditorCommon.DrawSelectionName(posing);
 
@@ -94,18 +94,18 @@ public class PosingTransformWindow : Window
         }
 
         if(ImGui.IsItemHovered())
-            ImGui.SetTooltip("Select Parent");
+            ImGui.SetTooltip("選取上層骨骼");
 
         // Clear Selection
         ImGui.SameLine();
         using(ImRaii.Disabled(posing.Selected.Value is None))
         {
-            if(ImGui.Button($"Clear###clear_selected", new Vector2(buttonWidth, 0)))
+            if(ImGui.Button($"清除###clear_selected", new Vector2(buttonWidth, 0)))
                 posing.ClearSelection();
         }
 
         if(ImGui.IsItemHovered())
-            ImGui.SetTooltip("Clear Selection");
+            ImGui.SetTooltip("清除選取");
     }
 
     private unsafe void DrawGizmo()
@@ -167,7 +167,7 @@ public class PosingTransformWindow : Window
             _posingService.CoordinateMode = _posingService.CoordinateMode == PosingCoordinateMode.Local ? PosingCoordinateMode.World : PosingCoordinateMode.Local;
 
         if(ImGui.IsItemHovered())
-            ImGui.SetTooltip(_posingService.CoordinateMode == PosingCoordinateMode.World ? "Switch to Local" : "Switch to World");
+            ImGui.SetTooltip(_posingService.CoordinateMode == PosingCoordinateMode.World ? "切換為局部座標" : "切換為世界座標");
 
 
         Vector2 gizmoSize = new(ImGui.GetContentRegionAvail().X, ImGui.GetContentRegionAvail().X);

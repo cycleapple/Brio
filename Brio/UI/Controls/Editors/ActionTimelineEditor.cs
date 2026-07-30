@@ -62,17 +62,17 @@ public class ActionTimelineEditor(CutsceneManager cutsceneManager, GPoseService 
         {
             DrawLips();
 
-            if(ImGui.CollapsingHeader("Scrub"))
+            if(ImGui.CollapsingHeader("時間軸"))
             {
                 DrawScrub();
             }
 
-            if(ImGui.CollapsingHeader("Slots"))
+            if(ImGui.CollapsingHeader("插槽"))
             {
                 DrawSlots();
             }
 
-            if(ImGui.CollapsingHeader("Cutscene Control"))
+            if(ImGui.CollapsingHeader("過場動畫控制"))
             {
                 DrawCutscene();
             }
@@ -81,7 +81,7 @@ public class ActionTimelineEditor(CutsceneManager cutsceneManager, GPoseService 
 
     private void DrawHeder()
     {
-        if(ImBrio.ToggelButton("Freeze Physics", new Vector2(95, 25), _physicsService.IsFreezeEnabled, hoverText: _physicsService.IsFreezeEnabled ? "Un-Freeze Physics" : "Freeze Physics"))
+        if(ImBrio.ToggelButton("凍結物理效果", new Vector2(95, 25), _physicsService.IsFreezeEnabled, hoverText: _physicsService.IsFreezeEnabled ? "解除凍結物理效果" : "凍結物理效果"))
         {
             _physicsService.FreezeToggle();
         }
@@ -90,7 +90,7 @@ public class ActionTimelineEditor(CutsceneManager cutsceneManager, GPoseService 
 
         ImBrio.RightAlign(97, 1);
 
-        if(ImGui.Button("Actors     ", new Vector2(70, 25)))
+        if(ImGui.Button("角色      ", new Vector2(70, 25)))
         {
             ImGui.OpenPopup("animation_control");
         }
@@ -107,7 +107,7 @@ public class ActionTimelineEditor(CutsceneManager cutsceneManager, GPoseService 
 
         ImGui.SameLine();
 
-        if(ImBrio.FontIconButtonRight("reset", FontAwesomeIcon.Undo, 1, "Reset Animation", _capability.HasOverride))
+        if(ImBrio.FontIconButtonRight("reset", FontAwesomeIcon.Undo, 1, "重設動畫", _capability.HasOverride))
         {
             _capability.Reset();
             _cutsceneManager.StopPlayback();
@@ -118,7 +118,7 @@ public class ActionTimelineEditor(CutsceneManager cutsceneManager, GPoseService 
         using var popup = ImRaii.Popup("animation_control");
         if(popup.Success)
         {
-            if(ImGui.Button("Freeze All Actors", Vector2.Zero))
+            if(ImGui.Button("凍結所有角色", Vector2.Zero))
             {
                 foreach(var actor in _entityManager.TryGetAllActors())
                 {
@@ -135,7 +135,7 @@ public class ActionTimelineEditor(CutsceneManager cutsceneManager, GPoseService 
                 }
             }
 
-            if(ImGui.Button("Un-Freeze All Actors", Vector2.Zero))
+            if(ImGui.Button("解除凍結所有角色", Vector2.Zero))
             {
                 foreach(var actor in _entityManager.TryGetAllActors())
                 {
@@ -152,7 +152,7 @@ public class ActionTimelineEditor(CutsceneManager cutsceneManager, GPoseService 
                 }
             }
 
-            if(ImGui.Button("Play all Animations", Vector2.Zero))
+            if(ImGui.Button("播放所有動畫", Vector2.Zero))
             {
                 foreach(var actor in _entityManager.TryGetAllActors())
                 {
@@ -166,7 +166,7 @@ public class ActionTimelineEditor(CutsceneManager cutsceneManager, GPoseService 
                 }
             }
 
-            if(ImGui.Button("Stop all Animations", Vector2.Zero))
+            if(ImGui.Button("停止所有動畫", Vector2.Zero))
             {
                 foreach(var actor in _entityManager.TryGetAllActors())
                 {
@@ -184,7 +184,7 @@ public class ActionTimelineEditor(CutsceneManager cutsceneManager, GPoseService 
 
     private void DrawBaseOverride()
     {
-        const string baseLabel = "Base";
+        const string baseLabel = "基礎";
         ImGui.SetNextItemWidth(MaxItemWidth - ImGui.CalcTextSize("XXXX").X);
         ImGui.InputInt($"###base_animation", ref _capability.SlotedBaseAnimation, 0, 0);
         if(ImBrio.IsItemConfirmed())
@@ -195,7 +195,7 @@ public class ActionTimelineEditor(CutsceneManager cutsceneManager, GPoseService 
         ImGui.SameLine();
         ImGui.Checkbox("###base_interrupt", ref _capability.DoBaseInterrupt);
         if(ImGui.IsItemHovered())
-            ImGui.SetTooltip("Interrupt");
+            ImGui.SetTooltip("中斷");
 
         ImGui.SameLine();
         ImGui.SetCursorPosX(LabelStart);
@@ -203,12 +203,12 @@ public class ActionTimelineEditor(CutsceneManager cutsceneManager, GPoseService 
 
         ImGui.SameLine();
 
-        if(ImBrio.FontIconButtonRight("base_play", FontAwesomeIcon.PlayCircle, 3, "Play", _capability.SlotedBaseAnimation != 0))
+        if(ImBrio.FontIconButtonRight("base_play", FontAwesomeIcon.PlayCircle, 3, "播放", _capability.SlotedBaseAnimation != 0))
             ApplyBaseOverride(_capability);
 
         ImGui.SameLine();
 
-        if(ImBrio.FontIconButtonRight("base_reset", FontAwesomeIcon.StopCircle, 2, "Stop", _capability.HasBaseOverride))
+        if(ImBrio.FontIconButtonRight("base_reset", FontAwesomeIcon.StopCircle, 2, "停止", _capability.HasBaseOverride))
         {
             _capability.ResetBaseOverride();
             _capability.ResetOverallSpeedOverride();
@@ -216,7 +216,7 @@ public class ActionTimelineEditor(CutsceneManager cutsceneManager, GPoseService 
 
         ImGui.SameLine();
 
-        if(ImBrio.FontIconButtonRight("base_search", FontAwesomeIcon.Search, 1, "Search"))
+        if(ImBrio.FontIconButtonRight("base_search", FontAwesomeIcon.Search, 1, "搜尋"))
         {
             _globalTimelineSelector.Select(null, false);
             _globalTimelineSelector.AllowBlending = false;
@@ -228,9 +228,9 @@ public class ActionTimelineEditor(CutsceneManager cutsceneManager, GPoseService 
         {
             if(popup.Success)
             {
-                ImGui.Checkbox("Start Animation On Select", ref _startAnimationOnSelect);
+                ImGui.Checkbox("選取時播放動畫", ref _startAnimationOnSelect);
                 if(ImGui.IsItemHovered())
-                    ImGui.SetTooltip("Start Animation On Select");
+                    ImGui.SetTooltip("選取時播放動畫");
 
                 _globalTimelineSelector.Draw();
 
@@ -254,7 +254,7 @@ public class ActionTimelineEditor(CutsceneManager cutsceneManager, GPoseService 
 
     private void DrawBlend()
     {
-        const string blendLabel = "Blend";
+        const string blendLabel = "混合";
 
         ImGui.SetNextItemWidth(MaxItemWidth);
         ImGui.InputInt($"###blend_animation", ref _capability.SlotedBlendAnimation, 0, 0);
@@ -270,12 +270,12 @@ public class ActionTimelineEditor(CutsceneManager cutsceneManager, GPoseService 
 
         ImGui.SameLine();
 
-        if(ImBrio.FontIconButtonRight("blend_play", FontAwesomeIcon.PlayCircle, 2, "Play", _capability.SlotedBlendAnimation != 0))
+        if(ImBrio.FontIconButtonRight("blend_play", FontAwesomeIcon.PlayCircle, 2, "播放", _capability.SlotedBlendAnimation != 0))
             ApplyBlend(_capability);
 
         ImGui.SameLine();
 
-        if(ImBrio.FontIconButtonRight("blend_search", FontAwesomeIcon.Search, 1, "Search"))
+        if(ImBrio.FontIconButtonRight("blend_search", FontAwesomeIcon.Search, 1, "搜尋"))
         {
             _globalTimelineSelector.Select(null, false);
             _globalTimelineSelector.AllowBlending = true;
@@ -309,7 +309,7 @@ public class ActionTimelineEditor(CutsceneManager cutsceneManager, GPoseService 
     {
         var lipsOverride = _capability.LipsOverride;
 
-        string preview = "None";
+        string preview = "無";
         if(lipsOverride != 0)
             preview = GameDataProvider.Instance.ActionTimelines[lipsOverride].Key.ToString();
 
@@ -318,7 +318,7 @@ public class ActionTimelineEditor(CutsceneManager cutsceneManager, GPoseService 
         {
             if(combo.Success)
             {
-                if(ImGui.Selectable($"None", lipsOverride == 0))
+                if(ImGui.Selectable($"無", lipsOverride == 0))
                 {
                     _capability.LipsOverride = 0;
                 }
@@ -336,7 +336,7 @@ public class ActionTimelineEditor(CutsceneManager cutsceneManager, GPoseService 
         }
         ImGui.SameLine();
         ImGui.SetCursorPosX(LabelStart);
-        ImGui.Text("Lips");
+        ImGui.Text("嘴唇");
     }
 
     private unsafe void DrawScrub()
@@ -448,7 +448,7 @@ public class ActionTimelineEditor(CutsceneManager cutsceneManager, GPoseService 
             _capability.SetOverallSpeedOverride(0f);
         }
         ImGui.SameLine();
-        ImGui.Text("Scrub");
+        ImGui.Text("時間軸");
     }
 
     private void DrawSlots()
@@ -470,7 +470,7 @@ public class ActionTimelineEditor(CutsceneManager cutsceneManager, GPoseService 
     {
         var actionInfo = _capability.GetSlotAction(slot).Match(
                    action => $"{action.RowId} ({action.Key})",
-                   none => "None"
+            none => "無"
                );
 
         var slotDescription = $"{slot} ({(int)slot}): {actionInfo}";
@@ -481,7 +481,7 @@ public class ActionTimelineEditor(CutsceneManager cutsceneManager, GPoseService 
 
             float existingSpeed = _capability.GetSlotSpeed(slot);
             float newSpeed = existingSpeed;
-            const string speedLabel = "Slot Speed";
+            const string speedLabel = "插槽速度";
             ImGui.SetNextItemWidth(ImGui.CalcTextSize($"XXXXXXXXXXXXXXXXXi").X);
             if(ImGui.SliderFloat($"{speedLabel}", ref newSpeed, 0f, 5f))
                 _capability.SetSlotSpeedOverride(slot, newSpeed);
@@ -489,13 +489,13 @@ public class ActionTimelineEditor(CutsceneManager cutsceneManager, GPoseService 
 
             ImGui.SameLine();
 
-            if(ImBrio.FontIconButtonRight("reset", FontAwesomeIcon.Undo, 1, "Reset Speed", _capability.HasSlotSpeedOverride(slot)))
+            if(ImBrio.FontIconButtonRight("reset", FontAwesomeIcon.Undo, 1, "重設速度", _capability.HasSlotSpeedOverride(slot)))
                 _capability.ResetSlotSpeedOverride(slot);
 
             ImGui.SameLine();
 
             var speed = _capability.GetSlotSpeed(slot);
-            if(ImBrio.FontIconButtonRight("speed_pause", FontAwesomeIcon.PauseCircle, 2, "Pause", speed > 0f))
+            if(ImBrio.FontIconButtonRight("speed_pause", FontAwesomeIcon.PauseCircle, 2, "暫停", speed > 0f))
                 _capability.SetSlotSpeedOverride(slot, 0.0f);
         }
     }
@@ -505,7 +505,7 @@ public class ActionTimelineEditor(CutsceneManager cutsceneManager, GPoseService 
         float existingSpeed = _capability.SpeedMultiplier;
         float newSpeed = existingSpeed;
 
-        const string speedLabel = "Speed";
+        const string speedLabel = "速度";
         ImGui.SetNextItemWidth(drawAdvanced ? MaxItemWidth - ImGui.CalcTextSize("XXXX").X : MaxItemWidth);
         if(ImGui.SliderFloat($"###speed_slider", ref newSpeed, _delimitSpeed ? -5f : 0f, _delimitSpeed ? 10f : 5f))
             _capability.SetOverallSpeedOverride(newSpeed);
@@ -519,7 +519,7 @@ public class ActionTimelineEditor(CutsceneManager cutsceneManager, GPoseService 
                     _capability.ResetOverallSpeedOverride();
                 }
             if(ImGui.IsItemHovered())
-                ImGui.SetTooltip("Delimit Speed");
+                ImGui.SetTooltip("解除速度限制");
         }
 
         ImGui.SameLine();
@@ -528,12 +528,12 @@ public class ActionTimelineEditor(CutsceneManager cutsceneManager, GPoseService 
 
         ImGui.SameLine();
 
-        if(ImBrio.FontIconButtonRight("speed_reset", FontAwesomeIcon.Undo, 1, "Reset Speed", _capability.HasSpeedMultiplierOverride))
+        if(ImBrio.FontIconButtonRight("speed_reset", FontAwesomeIcon.Undo, 1, "重設速度", _capability.HasSpeedMultiplierOverride))
             _capability.ResetOverallSpeedOverride();
 
         ImGui.SameLine();
 
-        if(ImBrio.FontIconButtonRight("speed_pause", FontAwesomeIcon.PauseCircle, 2, "Pause", _capability.SpeedMultiplier != 0f))
+        if(ImBrio.FontIconButtonRight("speed_pause", FontAwesomeIcon.PauseCircle, 2, "暫停", _capability.SpeedMultiplier != 0f))
         {
             _capability.SetOverallSpeedOverride(0f);
         }
@@ -541,7 +541,7 @@ public class ActionTimelineEditor(CutsceneManager cutsceneManager, GPoseService 
 
     private void DrawCutscene()
     {
-        ImGui.Text("Camera Path ");
+        ImGui.Text("攝影機路徑");
 
         ImGui.SameLine();
 
@@ -549,9 +549,9 @@ public class ActionTimelineEditor(CutsceneManager cutsceneManager, GPoseService 
 
         ImGui.SameLine();
 
-        if(ImGui.Button("Browse"))
+        if(ImGui.Button("瀏覽"))
         {
-            UIManager.Instance.FileDialogManager.OpenFileDialog("Browse for XAT Camera File", "XAT Camera File {.xcp}",
+            UIManager.Instance.FileDialogManager.OpenFileDialog("選擇 XAT 攝影機檔案", "XAT 攝影機檔案 {.xcp}",
                 (success, path) =>
                 {
                     if(success)
@@ -579,28 +579,28 @@ public class ActionTimelineEditor(CutsceneManager cutsceneManager, GPoseService 
 
         using(ImRaii.Disabled(string.IsNullOrEmpty(_cameraPath)))
         {
-            ImGui.Checkbox("Enable FOV", ref _cutsceneManager.CameraSettings.EnableFOV);
+            ImGui.Checkbox("啟用視野角度", ref _cutsceneManager.CameraSettings.EnableFOV);
 
             ImGui.Separator();
 
-            ImGui.Text("Disabling FOV will make for a less accurate Camera, but might");
-            ImGui.Text("provide for an easer way to support more character sizes without");
-            ImGui.Text("changing the Camera's Scale & Offset!");
+            ImGui.Text("停用視野角度會降低攝影機的準確度，");
+            ImGui.Text("但可在不調整攝影機縮放與偏移的情況下，");
+            ImGui.Text("較容易支援不同體型的角色。");
 
             ImGui.Separator();
 
-            ImGui.InputFloat3("Camera Scale", ref _cutsceneManager.CameraSettings.Scale);
-            ImGui.InputFloat3("Camera Offset", ref _cutsceneManager.CameraSettings.Offset);
+            ImGui.InputFloat3("攝影機縮放", ref _cutsceneManager.CameraSettings.Scale);
+            ImGui.InputFloat3("攝影機偏移", ref _cutsceneManager.CameraSettings.Offset);
 
             ImGui.Separator();
 
-            ImGui.Checkbox("Loop", ref _cutsceneManager.CameraSettings.Loop);
+            ImGui.Checkbox("循環播放", ref _cutsceneManager.CameraSettings.Loop);
 
-            ImGui.Checkbox("Hide Brio On Play  (Press 'Shift + B' to Stop Cutscene)", ref _cutsceneManager.CloseWindowsOnPlay);
+            ImGui.Checkbox("播放時隱藏 Brio（按 Shift + B 停止過場動畫）", ref _cutsceneManager.CloseWindowsOnPlay);
 
             ImGui.Checkbox("###delay_Start", ref _cutsceneManager.DelayStart);
             if(ImGui.IsItemHovered())
-                ImGui.SetTooltip("Start Delay");
+                ImGui.SetTooltip("開始延遲");
 
             ImGui.SameLine();
             ImGui.SetNextItemWidth(MaxItemWidth);
@@ -612,17 +612,17 @@ public class ActionTimelineEditor(CutsceneManager cutsceneManager, GPoseService 
 
             ImGui.SameLine();
             ImGui.SetCursorPosX(LabelStart);
-            ImGui.Text("Start Delay");
+            ImGui.Text("開始延遲");
 
             ImGui.Separator();
 
-            ImGui.Checkbox("Start All Actors Animations On Play", ref _cutsceneManager.StartAllActorAnimationsOnPlay);
+            ImGui.Checkbox("播放時啟動所有角色動畫", ref _cutsceneManager.StartAllActorAnimationsOnPlay);
 
             using(ImRaii.Disabled(_cutsceneManager.StartAllActorAnimationsOnPlay == false))
             {
                 ImGui.Checkbox("###animation_delay_Start", ref _cutsceneManager.DelayAnimationStart);
                 if(ImGui.IsItemHovered())
-                    ImGui.SetTooltip("Animation Start Delay");
+                    ImGui.SetTooltip("動畫開始延遲");
 
                 ImGui.SameLine();
                 ImGui.SetNextItemWidth(MaxItemWidth);
@@ -634,20 +634,20 @@ public class ActionTimelineEditor(CutsceneManager cutsceneManager, GPoseService 
 
                 ImGui.SameLine();
                 ImGui.SetCursorPosX(LabelStart);
-                ImGui.Text("Animation Delay");
+                ImGui.Text("動畫延遲");
             }
 
             ImGui.Separator();
 
-            ImGui.Text("The time-scale for the delay functions are in Milliseconds!");
-            ImGui.Text("1000 Milliseconds = 1 Second");
+            ImGui.Text("延遲時間以毫秒為單位。");
+            ImGui.Text("1000 毫秒 = 1 秒");
 
             ImGui.Separator();
 
             var isrunning = _cutsceneManager.IsRunning;
             using(ImRaii.Disabled(isrunning))
             {
-                if(ImGui.Button("Play"))
+                if(ImGui.Button("播放"))
                 {
                     _cutsceneManager.StartPlayback();
                 }
@@ -657,7 +657,7 @@ public class ActionTimelineEditor(CutsceneManager cutsceneManager, GPoseService 
 
             using(ImRaii.Disabled(!isrunning))
             {
-                if(ImGui.Button("Stop"))
+                if(ImGui.Button("停止"))
                 {
                     _cutsceneManager.StopPlayback();
                 }

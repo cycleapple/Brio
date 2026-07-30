@@ -39,19 +39,19 @@ public class GearEditor()
 
         didChange |= DrawReset(ref currentAppearance, originalAppearance);
 
-        if(ImBrio.FontIconButton("erase_equipment", FontAwesomeIcon.Eraser, "Remove all Equipment"))
+        if(ImBrio.FontIconButton("erase_equipment", FontAwesomeIcon.Eraser, "移除所有裝備"))
         {
             _capability.RemoveAllEquipment();
         }
 
         ImGui.SameLine();
-        if(ImBrio.FontIconButton("apply_smallclothes", FontAwesomeIcon.UserShield, "Equip NPC Smallclothes"))
+        if(ImBrio.FontIconButton("apply_smallclothes", FontAwesomeIcon.UserShield, "裝備 NPC 小衣"))
         {
             _capability.ApplySmallclothes();
         }
 
         ImGui.SameLine();
-        if(ImBrio.FontIconButton("apply_emperors", FontAwesomeIcon.UserNinja, "Equip Emperor's Set"))
+        if(ImBrio.FontIconButton("apply_emperors", FontAwesomeIcon.UserNinja, "裝備皇帝的新衣套裝"))
         {
             _capability.ApplyEmperors();
         }
@@ -64,7 +64,7 @@ public class GearEditor()
         {
             if(leftGearGroup.Success)
             {
-                if(ImGui.Checkbox("Replaces Main Hand with a Prop###weaponsprops", ref _mainProp))
+                if(ImGui.Checkbox("以道具取代主手武器###weaponsprops", ref _mainProp))
                 {
                     if(_mainProp == false)
                         currentAppearance.Weapons.MainHand = originalAppearance.Weapons.MainHand;
@@ -73,7 +73,7 @@ public class GearEditor()
                     didChange |= true;
                 }
                 if(ImGui.IsItemHovered())
-                    ImGui.SetTooltip("Replace main weapon with a prop.");
+                    ImGui.SetTooltip("以道具取代主手武器。");
 
                 ImGui.Spacing();
 
@@ -96,7 +96,7 @@ public class GearEditor()
         {
             if(rightGearGroup.Success)
             {
-                if(ImGui.Checkbox("Replaces Off-Hand with a Prop###offweaponsprops", ref _offHandProp))
+                if(ImGui.Checkbox("以道具取代副手武器###offweaponsprops", ref _offHandProp))
                 {
                     if(_offHandProp == false)
                         currentAppearance.Weapons.OffHand = originalAppearance.Weapons.OffHand;
@@ -107,7 +107,7 @@ public class GearEditor()
                 }
 
                 if(ImGui.IsItemHovered())
-                    ImGui.SetTooltip("Replaces the off-hand weapon with a prop.");
+                    ImGui.SetTooltip("以道具取代副手武器。");
 
                 ImGui.Spacing();
 
@@ -132,7 +132,7 @@ public class GearEditor()
 
         var resetTo = ImGui.GetCursorPos();
         bool equipChanged = !currentAppearance.Equipment.Equals(originalAppearance.Equipment) || !currentAppearance.Weapons.Equals(originalAppearance.Weapons) || !currentAppearance.Runtime.Equals(originalAppearance.Runtime);
-        if(ImBrio.FontIconButtonRight("reset_equipment", FontAwesomeIcon.Undo, 1, "Reset Equipment", equipChanged))
+        if(ImBrio.FontIconButtonRight("reset_equipment", FontAwesomeIcon.Undo, 1, "重設裝備", equipChanged))
         {
             currentAppearance.Equipment = originalAppearance.Equipment;
             currentAppearance.Weapons = originalAppearance.Weapons;
@@ -159,12 +159,12 @@ public class GearEditor()
 
         var (dye0Id, dye0Name, dye0Color) = dye0Union.Match(
             dye => ((byte)dye.RowId, dye.Name.ToString(), ImBrio.ARGBToABGR(dye.Color)),
-            none => ((byte)0, "None", (uint)0x0)
+            none => ((byte)0, "無", (uint)0x0)
         );
 
         var (dye1Id, dye1Name, dye1Color) = dye1Union.Match(
             dye => ((byte)dye.RowId, dye.Name.ToString(), ImBrio.ARGBToABGR(dye.Color)),
-            none => ((byte)0, "None", (uint)0x0)
+            none => ((byte)0, "無", (uint)0x0)
         );
 
         using(ImRaii.PushId(slot.ToString()))
@@ -181,7 +181,7 @@ public class GearEditor()
             {
                 if(group.Success)
                 {
-                    string description = $"{slot}: {model?.Name ?? "Unknown"}";
+                    string description = $"{slot}: {model?.Name ?? "未知"}";
 
                     ImGui.Text(description);
 
@@ -219,7 +219,7 @@ public class GearEditor()
                     {
                         ImGui.SameLine();
                         bool isHidden = appearance.Runtime.IsHatHidden;
-                        if(ImBrio.FontIconButton("hidehat", isHidden ? FontAwesomeIcon.Eye : FontAwesomeIcon.EyeSlash, isHidden ? "Show" : "Hide", bordered: false))
+                        if(ImBrio.FontIconButton("hidehat", isHidden ? FontAwesomeIcon.Eye : FontAwesomeIcon.EyeSlash, isHidden ? "顯示" : "隱藏", bordered: false))
                         {
                             appearance.Runtime.IsHatHidden = !isHidden;
                             didChange |= true;
@@ -228,7 +228,7 @@ public class GearEditor()
                         ImGui.SameLine();
 
                         bool isToggled = appearance.Runtime.IsVisorToggled;
-                        if(ImBrio.FontIconButton("visor", FontAwesomeIcon.Mask, "Visor", bordered: false, textColor: isToggled ? 0xFF555555 : null))
+                        if(ImBrio.FontIconButton("visor", FontAwesomeIcon.Mask, "面甲", bordered: false, textColor: isToggled ? 0xFF555555 : null))
                         {
                             appearance.Runtime.IsVisorToggled = !isToggled;
                             didChange |= true;
@@ -303,12 +303,12 @@ public class GearEditor()
 
         var (dye0Id, dye0Name, dye0Color) = dye0Union.Match(
             dye => ((byte)dye.RowId, dye.Name.ToString(), ImBrio.ARGBToABGR(dye.Color)),
-            none => ((byte)0, "None", (uint)0x0)
+            none => ((byte)0, "無", (uint)0x0)
         );
 
         var (dye1Id, dye1Name, dye1Color) = dye1Union.Match(
             dye => ((byte)dye.RowId, dye.Name.ToString(), ImBrio.ARGBToABGR(dye.Color)),
-            none => ((byte)0, "None", (uint)0x0)
+            none => ((byte)0, "無", (uint)0x0)
         );
 
         var model = GameDataProvider.Instance.ModelDatabase.GetModelById(equip, _weaponSlots);
@@ -327,7 +327,7 @@ public class GearEditor()
             {
                 if(group.Success)
                 {
-                    string description = $"{slot}: {model?.Name ?? "Unknown"}";
+                    string description = $"{slot}: {model?.Name ?? "未知"}";
 
                     ImGui.Text(description);
 
@@ -375,7 +375,7 @@ public class GearEditor()
                     ImGui.SameLine();
 
                     bool isHidden = slot == ActorEquipSlot.MainHand ? appearance.Runtime.IsMainHandHidden : appearance.Runtime.IsOffHandHidden;
-                    if(ImBrio.FontIconButton("hideweap", isHidden ? FontAwesomeIcon.Eye : FontAwesomeIcon.EyeSlash, isHidden ? "Show" : "Hide", bordered: false))
+                    if(ImBrio.FontIconButton("hideweap", isHidden ? FontAwesomeIcon.Eye : FontAwesomeIcon.EyeSlash, isHidden ? "顯示" : "隱藏", bordered: false))
                     {
                         if(slot == ActorEquipSlot.MainHand)
                         {
@@ -391,7 +391,7 @@ public class GearEditor()
                     if(slot == ActorEquipSlot.MainHand)
                     {
                         ImGui.SameLine();
-                        if(ImBrio.FontIconButton("attachweapon", FontAwesomeIcon.FistRaised, "Attach Weapon", bordered: false))
+                        if(ImBrio.FontIconButton("attachweapon", FontAwesomeIcon.FistRaised, "掛載武器", bordered: false))
                         {
                             _capability.AttachWeapon();
                         }
@@ -478,7 +478,7 @@ public class GearEditor()
             {
                 if(group.Success)
                 {
-                    string description = $"{slot}: {model?.Name ?? "Unknown"}";
+                    string description = $"{slot}: {model?.Name ?? "未知"}";
 
                     ImGui.Text(description);
 
@@ -508,7 +508,7 @@ public class GearEditor()
                     }
 
                     ImGui.SameLine();
-                    if(ImBrio.FontIconButton("attachweapon", FontAwesomeIcon.FistRaised, "Attach Weapon", bordered: false))
+                    if(ImBrio.FontIconButton("attachweapon", FontAwesomeIcon.FistRaised, "掛載武器", bordered: false))
                     {
                         _capability.AttachWeapon();
                         didChange |= true;
@@ -547,7 +547,7 @@ public class GearEditor()
         FacewearUnion facewearUnion = new FacewearId(appearance.Facewear);
         var (facewearId, facewearName, facewearIcon) = facewearUnion.Match(
            glasses => ((ushort)glasses.RowId, glasses.Name, (uint)glasses.Icon),
-           none => ((ushort)0, "None", (uint)0x0)
+            none => ((ushort)0, "無", (uint)0x0)
        );
 
         using(ImRaii.PushId("facewear"))
@@ -566,7 +566,7 @@ public class GearEditor()
             {
                 if(group.Success)
                 {
-                    string description = $"Facewear: {facewearName}";
+                    string description = $"臉飾：{facewearName}";
 
                     ImGui.Text(description);
 

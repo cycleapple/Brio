@@ -49,17 +49,17 @@ public class NpcSelector(string id) : Selector<NpcSelectorEntry>(id)
 
         foreach(var (_, mount) in GameDataProvider.Instance.Mounts)
         {
-            AddItem(new NpcSelectorEntry(mount.Singular.ToString() ?? $"Mount {mount.RowId}", mount.Icon, mount));
+            AddItem(new NpcSelectorEntry(mount.Singular.ToString() ?? $"坐騎 {mount.RowId}", mount.Icon, mount));
         }
 
         foreach(var (_, companion) in GameDataProvider.Instance.Companions)
         {
-            AddItem(new NpcSelectorEntry(companion.Singular.ToString() ?? $"Companion {companion.RowId}", companion.Icon, companion));
+            AddItem(new NpcSelectorEntry(companion.Singular.ToString() ?? $"寵物 {companion.RowId}", companion.Icon, companion));
         }
 
         foreach(var (_, ornament) in GameDataProvider.Instance.Ornaments)
         {
-            AddItem(new NpcSelectorEntry(ornament.Singular.ToString() ?? $"Ornament {ornament.RowId}", ornament.Icon, ornament));
+            AddItem(new NpcSelectorEntry(ornament.Singular.ToString() ?? $"時尚配飾 {ornament.RowId}", ornament.Icon, ornament));
         }
     }
 
@@ -83,36 +83,36 @@ public class NpcSelector(string id) : Selector<NpcSelectorEntry>(id)
 
     protected override void DrawOptions()
     {
-        if(ImGui.Checkbox("Battle NPCs", ref showBNpcs))
+        if(ImGui.Checkbox("戰鬥 NPC", ref showBNpcs))
             UpdateList();
 
         ImGui.SameLine();
 
-        if(ImGui.Checkbox("Event NPCs", ref showENpcs))
+        if(ImGui.Checkbox("事件 NPC", ref showENpcs))
             UpdateList();
 
         ImGui.SameLine();
 
-        if(ImGui.Checkbox("Mounts", ref showMounts))
+        if(ImGui.Checkbox("坐騎", ref showMounts))
             UpdateList();
 
-        if(ImGui.Checkbox("Companions", ref showCompanions))
+        if(ImGui.Checkbox("寵物", ref showCompanions))
             UpdateList();
 
         ImGui.SameLine();
 
-        if(ImGui.Checkbox("Ornaments", ref showOrnaments))
+        if(ImGui.Checkbox("時尚配飾", ref showOrnaments))
             UpdateList();
     }
 
     protected override void DrawItem(NpcSelectorEntry item, bool isHovered)
     {
         var details = item.Appearance.Match(
-            bnpc => $"Battle NPC: {bnpc.RowId}\nModel: {bnpc.ModelChara.RowId}",
-            enpc => $"Event NPC: {enpc.RowId}\nModel: {enpc.ModelChara.RowId}",
-            mount => $"Mount: {mount.RowId}\nModel: {mount.ModelChara.RowId}",
-            companion => $"Companion: {companion.RowId}\nModel: {companion.Model.RowId}",
-            ornament => $"Ornament: {ornament.RowId}\nModel: {ornament.Model}",
+            bnpc => $"戰鬥 NPC：{bnpc.RowId}\n模型：{bnpc.ModelChara.RowId}",
+            enpc => $"事件 NPC：{enpc.RowId}\n模型：{enpc.ModelChara.RowId}",
+            mount => $"坐騎：{mount.RowId}\n模型：{mount.ModelChara.RowId}",
+            companion => $"寵物：{companion.RowId}\n模型：{companion.Model.RowId}",
+            ornament => $"時尚配飾：{ornament.RowId}\n模型：{ornament.Model}",
             none => ""
         );
 

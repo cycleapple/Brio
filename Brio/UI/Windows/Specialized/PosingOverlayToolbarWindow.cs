@@ -31,7 +31,7 @@ public class PosingOverlayToolbarWindow : Window
 
     private const string _boneFilterPopupName = "bone_filter_popup";
 
-    public PosingOverlayToolbarWindow(PosingOverlayWindow overlayWindow, GameInputService gameInputService, EntityManager entityManager, PosingTransformWindow overlayTransformWindow, PosingService posingService, ConfigurationService configurationService) : base($"Brio - Overlay###brio_posing_overlay_toolbar_window", ImGuiWindowFlags.AlwaysAutoResize | ImGuiWindowFlags.NoCollapse)
+    public PosingOverlayToolbarWindow(PosingOverlayWindow overlayWindow, GameInputService gameInputService, EntityManager entityManager, PosingTransformWindow overlayTransformWindow, PosingService posingService, ConfigurationService configurationService) : base($"Brio - 姿勢浮層###brio_posing_overlay_toolbar_window", ImGuiWindowFlags.AlwaysAutoResize | ImGuiWindowFlags.NoCollapse)
     {
         Namespace = "brio_posing_overlay_toolbar_namespace";
 
@@ -134,7 +134,7 @@ public class PosingOverlayToolbarWindow : Window
                 _posingService.CoordinateMode = _posingService.CoordinateMode == PosingCoordinateMode.Local ? PosingCoordinateMode.World : PosingCoordinateMode.Local;
         }
         if(ImGui.IsItemHovered())
-            ImGui.SetTooltip(_posingService.CoordinateMode == PosingCoordinateMode.Local ? "Switch to World" : "Switch to Local");
+            ImGui.SetTooltip(_posingService.CoordinateMode == PosingCoordinateMode.Local ? "切換為世界座標" : "切換為局部座標");
 
         ImGui.SameLine();
 
@@ -147,7 +147,7 @@ public class PosingOverlayToolbarWindow : Window
             }
         }
         if(ImGui.IsItemHovered())
-            ImGui.SetTooltip("Toggle Transform Window");
+            ImGui.SetTooltip("切換變換視窗");
 
         ImGui.SameLine();
 
@@ -157,7 +157,7 @@ public class PosingOverlayToolbarWindow : Window
                 _overlayWindow.IsOpen = false;
         }
         if(ImGui.IsItemHovered())
-            ImGui.SetTooltip("Close Overlay");
+            ImGui.SetTooltip("關閉浮層");
 
         ImGui.Separator();
 
@@ -173,7 +173,7 @@ public class PosingOverlayToolbarWindow : Window
             }
         }
         if(ImGui.IsItemHovered())
-            ImGui.SetTooltip("Position");
+            ImGui.SetTooltip("位置");
 
         ImGui.SameLine();
 
@@ -187,7 +187,7 @@ public class PosingOverlayToolbarWindow : Window
             }
         }
         if(ImGui.IsItemHovered())
-            ImGui.SetTooltip("Rotation");
+            ImGui.SetTooltip("旋轉");
 
         ImGui.SameLine();
 
@@ -200,7 +200,7 @@ public class PosingOverlayToolbarWindow : Window
             }
         }
         if(ImGui.IsItemHovered())
-            ImGui.SetTooltip("Scale");
+            ImGui.SetTooltip("縮放");
 
         ImGui.SameLine();
 
@@ -215,7 +215,7 @@ public class PosingOverlayToolbarWindow : Window
             }
         }
         if(ImGui.IsItemHovered())
-            ImGui.SetTooltip("Universal");
+            ImGui.SetTooltip("通用操作軸");
 
         ImGui.Separator();
 
@@ -225,7 +225,7 @@ public class PosingOverlayToolbarWindow : Window
                 ImGui.OpenPopup(_boneFilterPopupName);
         }
         if(ImGui.IsItemHovered())
-            ImGui.SetTooltip("Bone Filter");
+            ImGui.SetTooltip("骨骼篩選");
 
         ImGui.SameLine();
 
@@ -250,7 +250,7 @@ public class PosingOverlayToolbarWindow : Window
             }
         }
         if(ImGui.IsItemHovered())
-            ImGui.SetTooltip("Select Parent");
+            ImGui.SetTooltip("選取上層骨骼");
 
 
         using(ImRaii.Disabled(!(bone?.EligibleForIK == true)))
@@ -259,7 +259,7 @@ public class PosingOverlayToolbarWindow : Window
                 ImGui.OpenPopup("overlay_bone_ik");
         }
         if(ImGui.IsItemHovered())
-            ImGui.SetTooltip("Inverse Kinematics");
+            ImGui.SetTooltip("反向運動學");
 
         ImGui.SameLine();
 
@@ -270,7 +270,7 @@ public class PosingOverlayToolbarWindow : Window
                 ImGui.OpenPopup("overlay_bone_search_popup");
         }
         if(ImGui.IsItemHovered())
-            ImGui.SetTooltip("Bone Search");
+            ImGui.SetTooltip("搜尋骨骼");
 
         ImGui.SameLine();
 
@@ -283,7 +283,7 @@ public class PosingOverlayToolbarWindow : Window
             }
         }
         if(ImGui.IsItemHovered())
-            ImGui.SetTooltip("Clear Selection");
+            ImGui.SetTooltip("清除選取");
 
         ImGui.Separator();
 
@@ -296,7 +296,7 @@ public class PosingOverlayToolbarWindow : Window
             }
         }
         if(ImGui.IsItemHovered())
-            ImGui.SetTooltip("Undo");
+            ImGui.SetTooltip("復原");
 
         ImGui.SameLine();
 
@@ -309,7 +309,7 @@ public class PosingOverlayToolbarWindow : Window
             }
         }
         if(ImGui.IsItemHovered())
-            ImGui.SetTooltip("Redo");
+            ImGui.SetTooltip("重做");
 
         ImGui.SameLine();
 
@@ -322,7 +322,7 @@ public class PosingOverlayToolbarWindow : Window
             }
         }
         if(ImGui.IsItemHovered())
-            ImGui.SetTooltip("Reset Pose");
+            ImGui.SetTooltip("重設姿勢");
 
         ImGui.Separator();
 
@@ -332,7 +332,7 @@ public class PosingOverlayToolbarWindow : Window
                 ImGui.OpenPopup("DrawImportPoseMenuPopup");
         }
         if(ImGui.IsItemHovered())
-            ImGui.SetTooltip("Import Pose");
+            ImGui.SetTooltip("匯入姿勢");
 
         FileUIHelpers.DrawImportPoseMenuPopup(posing, false);
 
@@ -344,7 +344,7 @@ public class PosingOverlayToolbarWindow : Window
                 FileUIHelpers.ShowExportPoseModal(posing);
         }
         if(ImGui.IsItemHovered())
-            ImGui.SetTooltip("Export Pose");
+            ImGui.SetTooltip("匯出姿勢");
 
         ImGui.SameLine();
 
@@ -354,7 +354,7 @@ public class PosingOverlayToolbarWindow : Window
                 ImGui.OpenPopup("import_options_popup_pose_tooblar");
         }
         if(ImGui.IsItemHovered())
-            ImGui.SetTooltip("Import Options");
+            ImGui.SetTooltip("匯入選項");
 
         ImGui.PopStyleColor();
 
@@ -403,7 +403,7 @@ public class PosingOverlayToolbarWindow : Window
         var initialPos = ImGui.GetCursorPos();
         ImGui.PushClipRect(ImGui.GetWindowPos(), ImGui.GetWindowPos() + ImGui.GetWindowSize(), false);
 
-        const string helpText = "Alt - Hide Overlay\nShift - Disable Gizmo\nCtrl - Disable Skeleton";
+        const string helpText = "Alt－隱藏浮層\nShift－停用操作軸\nCtrl－隱藏骨架";
 
         ImGui.SetCursorPosY(0);
         ImBrio.FontIconButtonRight("overlay_help", FontAwesomeIcon.QuestionCircle, 2f, helpText, bordered: false);

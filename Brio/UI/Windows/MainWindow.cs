@@ -42,7 +42,7 @@ public class MainWindow : Window, IDisposable
         ProjectWindow projectWindow,
         AutoSaveService autoSaveService
         )
-        : base($"{Brio.Name} Scene Manager [{configService.Version}]###brio_main_window", ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.AlwaysAutoResize)
+        : base($"{Brio.Name} 場景管理器 [{configService.Version}]###brio_main_window", ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.AlwaysAutoResize)
     {
         Namespace = "brio_main_namespace";
 
@@ -75,7 +75,7 @@ public class MainWindow : Window, IDisposable
         if(_gPoseService.IsGPosing == false)
         {
             using(ImRaii.PushColor(ImGuiCol.Text, UIConstants.GizmoRed))
-                ImGui.Text("Open GPose to use Brio!");
+                ImGui.Text("請先開啟團體動作，再使用 Brio！");
         }
 
         var rootEntity = _entityManager.RootEntity;
@@ -123,11 +123,11 @@ public class MainWindow : Window, IDisposable
                 ImGui.SetCursorPos(startPos);
             }
 
-            if(ImBrio.Button("Project", FontAwesomeIcon.FolderOpen, new Vector2(line1Width, 0)))
+            if(ImBrio.Button("專案", FontAwesomeIcon.FolderOpen, new Vector2(line1Width, 0)))
                 ImGui.OpenPopup("DrawProjectPopup");
 
             ImGui.SameLine();
-            if(ImBrio.Button("Library", FontAwesomeIcon.Book, new Vector2(line1Width, 0)))
+            if(ImBrio.Button("資料庫", FontAwesomeIcon.Book, new Vector2(line1Width, 0)))
                 _libraryWindow.Toggle();
         }
 
@@ -136,14 +136,14 @@ public class MainWindow : Window, IDisposable
             _infoWindow.Toggle();
 
         if(ImGui.IsItemHovered())
-            ImGui.SetTooltip("Information & Changelog");
+            ImGui.SetTooltip("資訊與更新紀錄");
 
         ImGui.SameLine();
         if(ImBrio.FontIconButton(FontAwesomeIcon.Cog, new(buttonWidths, 0)))
             _settingsWindow.Toggle();
 
         if(ImGui.IsItemHovered())
-            ImGui.SetTooltip("Settings");
+            ImGui.SetTooltip("設定");
 
         //
         FileUIHelpers.DrawProjectPopup(_sceneService, _entityManager, _projectWindow, _autoSaveService);

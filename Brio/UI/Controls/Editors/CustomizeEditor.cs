@@ -42,7 +42,7 @@ public class CustomizeEditor()
         }
         else
         {
-            if(ImGui.Button("Make Human"))
+            if(ImGui.Button("設為玩家種族"))
                 _ = _capability.MakeHuman();
         }
 
@@ -55,7 +55,7 @@ public class CustomizeEditor()
 
         var resetTo = ImGui.GetCursorPos();
         bool customizeChanged = !currentAppearance.Customize.Equals(originalAppearance.Customize) || currentAppearance.ModelCharaId != originalAppearance.ModelCharaId;
-        if(ImBrio.FontIconButtonRight("reset_customize", FontAwesomeIcon.Undo, 1, "Reset Customize", customizeChanged))
+        if(ImBrio.FontIconButtonRight("reset_customize", FontAwesomeIcon.Undo, 1, "重設外觀", customizeChanged))
         {
             currentAppearance.ModelCharaId = originalAppearance.ModelCharaId;
             currentAppearance.Customize = originalAppearance.Customize;
@@ -152,7 +152,7 @@ public class CustomizeEditor()
     {
         bool madeChange = false;
 
-        const string modelIdLabel = "Model";
+        const string modelIdLabel = "模型";
         ImGui.SetNextItemWidth(MaxItemWidth);
         if(ImGui.InputInt("###model_id", ref modelId, 1, 1, default, ImGuiInputTextFlags.EnterReturnsTrue))
             madeChange |= true;
@@ -166,10 +166,10 @@ public class CustomizeEditor()
     {
         bool madeChange = false;
 
-        const string raceLabel = "Race";
+        const string raceLabel = "種族";
         float width = MaxItemWidth / 2f - ImGui.GetStyle().FramePadding.X;
 
-        var racePreview = Enum.GetName(customize.Race) ?? "Unknown";
+        var racePreview = Enum.GetName(customize.Race) ?? "未知";
         ImGui.SetNextItemWidth(width);
         using(var raceDrop = ImRaii.Combo("###race_combo", racePreview))
         {
@@ -191,7 +191,7 @@ public class CustomizeEditor()
         ImGui.SameLine();
 
         var existingTribe = customize.Tribe;
-        var tribePreview = Enum.GetName(existingTribe) ?? "Unknown";
+        var tribePreview = Enum.GetName(existingTribe) ?? "未知";
         ImGui.SetNextItemWidth(width);
         using(var tribeDrop = ImRaii.Combo("###tribe_combo", tribePreview))
         {
@@ -210,7 +210,7 @@ public class CustomizeEditor()
         }
 
         var existingGender = customize.Gender;
-        var genderPreview = Enum.GetName(existingGender) ?? "Unknown";
+        var genderPreview = Enum.GetName(existingGender) ?? "未知";
         ImGui.SetNextItemWidth(width);
         using(var genderDrop = ImRaii.Combo("###gender_combo", genderPreview))
         {
@@ -231,7 +231,7 @@ public class CustomizeEditor()
         ImGui.SameLine();
 
         var existingType = customize.BodyType;
-        var typePreview = Enum.GetName(existingType) ?? "Unknown";
+        var typePreview = Enum.GetName(existingType) ?? "未知";
         ImGui.SetNextItemWidth(width);
         using(var typeDrop = ImRaii.Combo("###type_combo", typePreview))
         {
@@ -305,13 +305,13 @@ public class CustomizeEditor()
                     customize.HairStyle = (byte)currentHairIdx;
                 }
 
-                madeChange |= DrawColorSelector(ref customize, CustomizeIndex.HairColor, "Hair Color");
+                madeChange |= DrawColorSelector(ref customize, CustomizeIndex.HairColor, "髮色");
 
                 ImGui.SameLine();
 
                 using(ImRaii.Disabled(!highlightEnabled))
                 {
-                    madeChange |= DrawColorSelector(ref customize, CustomizeIndex.HairColor2, "Highlight Color");
+                    madeChange |= DrawColorSelector(ref customize, CustomizeIndex.HairColor2, "挑染顏色");
                 }
 
                 ImGui.SameLine();
@@ -322,7 +322,7 @@ public class CustomizeEditor()
                     madeChange |= true;
                 }
                 if(ImGui.IsItemHovered())
-                    ImGui.SetTooltip("Enable Hair Highlights");
+                    ImGui.SetTooltip("啟用挑染");
 
             }
         }
@@ -354,15 +354,15 @@ public class CustomizeEditor()
             madeChange |= true;
         }
         if(ImGui.IsItemHovered())
-            ImGui.SetTooltip("Eye Shape");
+            ImGui.SetTooltip("眼型");
 
         ImGui.SameLine();
 
-        madeChange |= DrawColorSelector(ref customize, CustomizeIndex.EyeColor2, "Left Eye Color");
+        madeChange |= DrawColorSelector(ref customize, CustomizeIndex.EyeColor2, "左眼顏色");
 
         ImGui.SameLine();
 
-        madeChange |= DrawColorSelector(ref customize, CustomizeIndex.EyeColor, "Right Eye Color");
+        madeChange |= DrawColorSelector(ref customize, CustomizeIndex.EyeColor, "右眼顏色");
 
         ImGui.SameLine();
 
@@ -373,11 +373,11 @@ public class CustomizeEditor()
             madeChange |= true;
         }
         if(ImGui.IsItemHovered())
-            ImGui.SetTooltip("Small Iris");
+            ImGui.SetTooltip("小虹膜");
 
         ImGui.SameLine();
         ImGui.SetCursorPosX(LabelStart);
-        ImGui.Text("Eyes");
+        ImGui.Text("眼睛");
 
 
         return madeChange;
@@ -416,13 +416,13 @@ public class CustomizeEditor()
             }
 
             if(ImGui.IsItemHovered())
-                ImGui.SetTooltip("Enable Lip Color");
+                ImGui.SetTooltip("啟用唇色");
 
             ImGui.SameLine();
 
             using(ImRaii.Disabled(!lipColorEnabled))
             {
-                madeChange |= DrawColorSelector(ref customize, CustomizeIndex.LipColor, "Lip Color");
+                madeChange |= DrawColorSelector(ref customize, CustomizeIndex.LipColor, "唇色");
             }
         }
 
@@ -479,7 +479,7 @@ public class CustomizeEditor()
                     customize.RealFacepaint = (byte)currentFacepaintIdx;
                 }
 
-                madeChange |= DrawColorSelector(ref customize, CustomizeIndex.FacepaintColor, "Color");
+                madeChange |= DrawColorSelector(ref customize, CustomizeIndex.FacepaintColor, "顏色");
 
                 ImGui.SameLine();
 
@@ -489,7 +489,7 @@ public class CustomizeEditor()
                     madeChange |= true;
                 }
                 if(ImGui.IsItemHovered())
-                    ImGui.SetTooltip("Flipped");
+                    ImGui.SetTooltip("翻轉");
             }
         }
 
@@ -552,7 +552,7 @@ public class CustomizeEditor()
 
             ImGui.SameLine();
             ImGui.SetCursorPos(new Vector2(LabelStart, ImGui.GetCursorPosY() + ImGui.GetTextLineHeight()));
-            ImGui.Text("Features");
+            ImGui.Text("臉部特徵");
             ImGui.SetCursorPos(whenDone);
 
             if(ImBrio.DrawIconSelectorPopup("face_feature_popup", [.. entries], ref currentFeatures, columns: 4, iconSize: IconSize, fallbackImage: "Images.Head.png", bitField: true))

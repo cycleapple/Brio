@@ -6,6 +6,7 @@ using Brio.UI.Widgets.Core;
 using Dalamud.Interface;
 using Dalamud.Interface.Utility.Raii;
 using Dalamud.Bindings.ImGui;
+using System.Linq;
 using System.Numerics;
 
 namespace Brio.UI.Entitites;
@@ -32,7 +33,10 @@ public class EntityHierarchyView(EntityManager entityManager, GPoseService gPose
 
         using(ImRaii.PushId($"entity_hierarchy_{root.Id}"))
         {
-            foreach(var item in root.Children)
+            // Drawing an entity can trigger a redraw or object-table update that
+            // attaches/detaches entities. Iterate over a frame-local snapshot so
+            // those updates do not invalidate the active List<T> enumerator.
+            foreach(var item in root.Children.ToList())
             {
                 var disable = gPoseService.IsGPosing == false && item.Flags.HasFlag(EntityFlags.AllowOutSideGpose) == false;
                 using(ImRaii.Disabled(disable))
@@ -122,7 +126,7 @@ public class EntityHierarchyView(EntityManager entityManager, GPoseService gPose
 
         if(hasChildren)
         {
-            foreach(var child in entity.Children)
+            foreach(var child in entity.Children.ToList())
             {
                 DrawEntity(child, selectedEntityId, lastOffset == 0 ? 3 : lastOffset);
             }

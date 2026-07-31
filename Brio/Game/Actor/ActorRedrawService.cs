@@ -32,7 +32,7 @@ public class ActorRedrawService(IFramework framework, IObjectTable objectTable)
         DisableDraw(go);
         try
         {
-            ActorRedrawEvent?.Invoke(go, RedrawStage.After);
+            ActorRedrawEvent?.Invoke(go, RedrawStage.Before);
             await DrawWhenReady(go);
             await WaitForDrawing(go);
             ActorRedrawEvent?.Invoke(go, RedrawStage.After);

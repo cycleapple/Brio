@@ -42,6 +42,7 @@ public class PenumbraService : BrioIPC
 
     private readonly SetCollectionForObject _penumbraSetCollectionForObject;
     private readonly GetCollectionForObject _penumbraGetCollectionForObject;
+    private readonly SetCutsceneParentIndex _penumbraSetCutsceneParentIndex;
     private readonly GetCollections _penumbraGetCollections;
     private readonly OpenMainWindow _penumbraOpenMainWindow;
     private readonly ApiVersion _penumbraApiVersion;
@@ -57,6 +58,7 @@ public class PenumbraService : BrioIPC
 
         _penumbraGetCollectionForObject = new GetCollectionForObject(_pluginInterface);
         _penumbraSetCollectionForObject = new SetCollectionForObject(_pluginInterface);
+        _penumbraSetCutsceneParentIndex = new SetCutsceneParentIndex(_pluginInterface);
         _penumbraGetCollections = new GetCollections(_pluginInterface);
         _penumbraOpenMainWindow = new OpenMainWindow(pluginInterface);
         _penumbraApiVersion = new ApiVersion(_pluginInterface);
@@ -90,8 +92,20 @@ public class PenumbraService : BrioIPC
 
         Brio.Log.Debug($"Setting GameObject {gameObject.ObjectIndex} collection to {collectionName}");
 
-        var (_, oldCollection) = _penumbraSetCollectionForObject.Invoke(gameObject.ObjectIndex, collectionName, true, true);
-        return oldCollection!.Value.Id; // TODO Fix null reference
+        var (objectValid, _, effectiveCollection) = _penumbraGetCollectionForObject.Invoke(gameObject.ObjectIndex);
+        if(objectValid == false)
+            return Guid.Empty;
+
+        var (result, oldCollection) = _penumbraSetCollectionForObject.Invoke(gameObject.ObjectIndex, collectionName, true, true);
+        if(result is not Penumbra.Api.Enums.PenumbraApiEc.Success and not Penumbra.Api.Enums.PenumbraApiEc.NothingChanged)
+        {
+            Brio.Log.Warning($"Could not set GameObject {gameObject.ObjectIndex} collection to {collectionName}: {result}");
+            return Guid.Empty;
+        }
+
+        // A newly created individual assignment has no old explicit collection.
+        // Preserve its previously effective collection so Reset can restore it.
+        return oldCollection?.Id ?? effectiveCollection.Id;
     }
 
     public Dictionary<Guid, string> GetCollections()
@@ -100,6 +114,21 @@ public class PenumbraService : BrioIPC
             return null!;
 
         return _penumbraGetCollections.Invoke();
+    }
+
+    /// <summary>
+    /// Treat a Brio-created GPose actor as an independent actor instead of a copy of
+    /// the character it was initialized from. Penumbra otherwise resolves collection
+    /// assignments through the copied character's identifier.
+    /// </summary>
+    public void DetachCutsceneActor(IGameObject gameObject)
+    {
+        if(IsAvailable == false || gameObject is null)
+            return;
+
+        var result = _penumbraSetCutsceneParentIndex.Invoke(gameObject.ObjectIndex, -1);
+        if(result != Penumbra.Api.Enums.PenumbraApiEc.Success)
+            Brio.Log.Warning($"Could not detach GameObject {gameObject.ObjectIndex} from its Penumbra cutscene parent: {result}");
     }
 
     private void HandlePenumbraRedraw(nint arg1, int arg2)

@@ -114,8 +114,7 @@ public class ActorAppearanceCapability : ActorCharacterCapability
 
     public void SetDesign(Guid design)
     {
-        IsDesignOverridden = true;
-        _ = _glamourerService.ApplyDesign(design, Character);
+        IsDesignOverridden = _glamourerService.ApplyDesign(design, Character);
     }
     public void ResetDesign(bool checkResetLock = true)
     {

@@ -9,7 +9,7 @@
 		<ProduceReferenceAssembly>false</ProduceReferenceAssembly>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
 		<CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
-		<Version>0.5.2.2</Version>
+		<Version>0.5.2.3</Version>
 	</PropertyGroup>
 
 	<ItemGroup>

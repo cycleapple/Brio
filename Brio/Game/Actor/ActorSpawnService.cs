@@ -31,6 +31,7 @@ public class ActorSpawnService : IDisposable
     private readonly GPoseService _gPoseService;
     private readonly ActorRedrawService _actorRedrawService;
     private readonly GlamourerService _glamourerService;
+    private readonly PenumbraService _penumbraService;
     private readonly TargetService _targetService;
     private readonly EntityManager _entityManager;
     private readonly PosingService _posingService;
@@ -39,7 +40,7 @@ public class ActorSpawnService : IDisposable
 
     private readonly Dictionary<ushort, SpawnFlags> _createdIndexes = [];
 
-    public unsafe ActorSpawnService(ObjectMonitorService monitorService, CustomizePlusService customizePlusService, ActorAppearanceService actorAppearanceService, PosingService posingService, GlamourerService glamourerService, EntityManager entityManager, IObjectTable objectTable, IClientState clientState, IFramework framework, GPoseService gPoseService, ActorRedrawService actorRedrawService, TargetService targetService)
+    public unsafe ActorSpawnService(ObjectMonitorService monitorService, CustomizePlusService customizePlusService, ActorAppearanceService actorAppearanceService, PosingService posingService, GlamourerService glamourerService, PenumbraService penumbraService, EntityManager entityManager, IObjectTable objectTable, IClientState clientState, IFramework framework, GPoseService gPoseService, ActorRedrawService actorRedrawService, TargetService targetService)
     {
         _monitorService = monitorService;
         _objectTable = objectTable;
@@ -48,6 +49,7 @@ public class ActorSpawnService : IDisposable
         _gPoseService = gPoseService;
         _actorRedrawService = actorRedrawService;
         _glamourerService = glamourerService;
+        _penumbraService = penumbraService;
         _targetService = targetService;
         _entityManager = entityManager;
         _posingService = posingService;
@@ -102,6 +104,11 @@ public class ActorSpawnService : IDisposable
             // We first copy the real source, then we copy ourselves onto ourselves.
             targetNative->CharacterSetup.CopyFromCharacter(sourceCharacter.Native(), copyFlags);
             targetNative->CharacterSetup.CopyFromCharacter(outCharacter.Native(), CharacterCopyFlags.None);
+
+            // CopyFromCharacter makes Penumbra treat this object-table slot as a
+            // cutscene copy of the source. Brio actors are independently editable,
+            // so collection and Glamourer lookups must resolve against this actor.
+            _penumbraService.DetachCutsceneActor(outCharacter);
 
             // Copy position if requested
             if(flags.HasFlag(SpawnFlags.CopyPosition))

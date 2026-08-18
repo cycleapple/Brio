@@ -153,7 +153,12 @@ public class GlamourerService : BrioIPC
         if(IsAvailable == false || character is null)
             return false;
 
-        _glamourerApplyDesign.Invoke(design, character!.ObjectIndex);
+        var result = _glamourerApplyDesign.Invoke(design, character.ObjectIndex);
+        if(result != Glamourer.Api.Enums.GlamourerApiEc.Success)
+        {
+            Brio.Log.Warning($"Could not apply Glamourer design {design} to GameObject {character.ObjectIndex}: {result}");
+            return false;
+        }
 
         return true;
     }

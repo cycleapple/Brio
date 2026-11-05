@@ -1,4 +1,4 @@
-﻿using Brio.Game.Actor.Appearance;
+using Brio.Game.Actor.Appearance;
 using Brio.Resources.Extra;
 using Brio.Resources.Sheets;
 using Dalamud.Plugin.Services;
@@ -34,7 +34,7 @@ public class GameDataProvider
     public readonly IReadOnlyDictionary<uint, NpcEquip> NpcEquips;
     public readonly IReadOnlyDictionary<uint, Stain> Stains;
     public readonly IReadOnlyDictionary<uint, CharaMakeCustomize> CharaMakeCustomizations;
-    public readonly IReadOnlyDictionary<uint, BrioCharaMakeType> CharaMakeTypes;
+    public readonly IReadOnlyDictionary<uint, CharaMakeType> CharaMakeTypes;
     public readonly IReadOnlyDictionary<uint, BrioHairMakeType> HairMakeTypes;
     public readonly IReadOnlyDictionary<uint, Item> Items;
     public readonly IReadOnlyDictionary<uint, Glasses> Glasses;
@@ -85,7 +85,7 @@ public class GameDataProvider
 
         CharaMakeCustomizations = dataManager.GetExcelSheet<CharaMakeCustomize>()!.ToDictionary(x => x.RowId, x => x).AsReadOnly();
 
-        CharaMakeTypes = dataManager.GetExcelSheet<BrioCharaMakeType>()!.ToDictionary(x => x.RowId, x => x).AsReadOnly();
+        CharaMakeTypes = dataManager.GetExcelSheet<CharaMakeType>()!.ToDictionary(x => x.RowId, x => x).AsReadOnly();
 
         HairMakeTypes = dataManager.GetExcelSheet<BrioHairMakeType>()!.ToDictionary(x => x.RowId, x => x).AsReadOnly();
 

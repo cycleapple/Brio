@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Brio.Resources.Sheets;
 
-[Sheet("HairMakeType")]
+[Sheet("HairMakeType", 3374538714u)]
 public struct BrioHairMakeType : IExcelRow<BrioHairMakeType>
 {
     public const int EntryCount = 100;
@@ -28,23 +28,21 @@ public struct BrioHairMakeType : IExcelRow<BrioHairMakeType>
 
     public static BrioHairMakeType Create(ExcelPage page, uint offset, uint row)
     {
-        var brioHairMakeType = new BrioHairMakeType
-        {
-            RowId = row,
-            ExcelPage = page,
-            RowOffset = offset,
-
-            Race = new RowRef<Race>(page.Module, (uint)page.ReadInt32(offset + 4076), page.Language),
-            Tribe = new RowRef<Tribe>(page.Module, (uint)page.ReadInt32(offset + 4080), page.Language),
-            Gender = (Genders)(uint)page.ReadInt8(offset + 4084)
+        var native = new HairMakeType(page, offset, row);
+        var hairMenu = native.CharaMakeStruct[0];
+        var faceMenu = native.CharaMakeStruct[7];
+        foreach (var menu in native.CharaMakeStruct) {
+            if (menu.Customize == (uint)Dalamud.Game.ClientState.Objects.Enums.CustomizeIndex.HairStyle) hairMenu = menu;
+            if (menu.Customize == (uint)Dalamud.Game.ClientState.Objects.Enums.CustomizeIndex.Facepaint) faceMenu = menu;
+        }
+        var brioHairMakeType = new BrioHairMakeType {
+            RowId = row, ExcelPage = page, RowOffset = offset,
+            Race = native.Race, Tribe = native.Tribe, Gender = (Genders)native.Gender
         };
-
-        for(int i = 0; i < EntryCount; i++)
-            brioHairMakeType.HairStyles[i] = new RowRef<CharaMakeCustomize>(page.Module, page.ReadUInt32((nuint)(offset + 0xC + (i * 4))), page.Language);
-
-        for(int i = 0; i < EntryCount; i++)
-            brioHairMakeType.FacePaints[i] = new RowRef<CharaMakeCustomize>(page.Module, page.ReadUInt32((nuint)(offset + 0xBC0 + (i * 4))), page.Language);
-
+        for (var i = 0; i < EntryCount; i++) {
+            brioHairMakeType.HairStyles[i] = new RowRef<CharaMakeCustomize>(page.Module, hairMenu.SubMenuParam[i], page.Language);
+            brioHairMakeType.FacePaints[i] = new RowRef<CharaMakeCustomize>(page.Module, faceMenu.SubMenuParam[i], page.Language);
+        }
         return brioHairMakeType;
     }
 

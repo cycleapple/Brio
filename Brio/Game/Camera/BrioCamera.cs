@@ -1,4 +1,4 @@
-﻿namespace Brio.Game.Camera;
+namespace Brio.Game.Camera;
 
 using System.Numerics;
 using System.Runtime.InteropServices;
@@ -10,7 +10,7 @@ public struct BrioCamera
     [FieldOffset(0x0)]
     public GameCamera Camera;
 
-    [FieldOffset(0x13C)] public float FoV;
+    public float FoV { readonly get => Camera.FoV; set => Camera.FoV = value; }
 
     [FieldOffset(0x140)] public Vector2 Angle;
 

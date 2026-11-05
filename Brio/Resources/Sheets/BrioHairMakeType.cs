@@ -1,4 +1,4 @@
-﻿using Brio.Game.Actor.Appearance;
+using Brio.Game.Actor.Appearance;
 using Lumina.Excel;
 using Lumina.Excel.Sheets;
 using System.Collections.Generic;
@@ -16,6 +16,8 @@ public struct BrioHairMakeType : IExcelRow<BrioHairMakeType>
     }
 
     public uint RowId { get; private set; }
+    public ExcelPage ExcelPage { get; private set; }
+    public uint RowOffset { get; private set; }
 
     public RowRef<Race> Race { get; private set; }
     public RowRef<Tribe> Tribe { get; private set; }
@@ -29,6 +31,8 @@ public struct BrioHairMakeType : IExcelRow<BrioHairMakeType>
         var brioHairMakeType = new BrioHairMakeType
         {
             RowId = row,
+            ExcelPage = page,
+            RowOffset = offset,
 
             Race = new RowRef<Race>(page.Module, (uint)page.ReadInt32(offset + 4076), page.Language),
             Tribe = new RowRef<Tribe>(page.Module, (uint)page.ReadInt32(offset + 4080), page.Language),

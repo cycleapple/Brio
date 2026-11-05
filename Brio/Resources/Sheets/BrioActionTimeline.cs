@@ -1,4 +1,4 @@
-﻿
+
 //
 // Some code in this file was generated and is from the Lumina.Excel project (https://github.com/NotAdam/Lumina.Excel)
 // (Lumina.Excel.Sheets.ActionTimeline)
@@ -13,6 +13,9 @@ namespace Brio.Resources.Sheets;
 [Sheet("ActionTimeline", 0xD803699F)]
 readonly public struct BrioActionTimeline(ExcelPage page, uint offset, uint row) : IExcelRow<BrioActionTimeline>
 {
+    public ExcelPage ExcelPage => page;
+    public uint RowOffset => offset;
+
     public uint RowId => row;
 
     public readonly ReadOnlySeString Key => page.ReadString(offset, offset);

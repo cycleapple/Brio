@@ -1,4 +1,4 @@
-﻿
+
 //
 // Some code in this file was generated and is from the Lumina.Excel project (https://github.com/NotAdam/Lumina.Excel)
 // (Lumina.Excel.Sheets.CharaMakeType)
@@ -16,6 +16,9 @@ namespace Brio.Resources.Sheets;
 [Sheet("CharaMakeType", 0x80D7DB6D)]
 public unsafe struct BrioCharaMakeType(ExcelPage page, uint offset, uint row) : IExcelRow<BrioCharaMakeType>
 {
+    public ExcelPage ExcelPage => page;
+    public uint RowOffset => offset;
+
     public const int MenuCount = 28;
     public const int SubMenuParamCount = 100;
     public const int SubMenuGraphicCount = 10;

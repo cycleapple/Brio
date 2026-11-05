@@ -1,4 +1,4 @@
-﻿using Brio.Core;
+using Brio.Core;
 using Brio.Game.GPose;
 using Brio.Resources;
 using Dalamud.Plugin.Services;
@@ -13,7 +13,7 @@ namespace Brio.Game.World;
 
 public unsafe class FestivalService : IDisposable
 {
-    public const int MaxFestivals = 4;
+    public const int MaxFestivals = 8;
 
     public readonly IReadOnlyDictionary<uint, FestivalEntry> FestivalList;
 
@@ -37,7 +37,7 @@ public unsafe class FestivalService : IDisposable
     {
         get
         {
-            uint[] activeFestivals = new uint[4];
+            uint[] activeFestivals = new uint[MaxFestivals];
             var engineFestivals = GameMain.Instance()->ActiveFestivals;
             for(int i = 0; i < MaxFestivals; i++)
             {
@@ -137,15 +137,18 @@ public unsafe class FestivalService : IDisposable
         }
     }
 
+    private static GameMain.Festival NativeFestival(uint packed)
+        => new() { Id = (ushort)packed, Phase = (ushort)(packed >> 16) };
+
     private void publicApply(uint[] festivals, bool applyNow = true)
     {
         if(applyNow)
         {
-            GameMain.Instance()->SetActiveFestivals(festivals[0], festivals[1], festivals[2], festivals[3]);
+            GameMain.Instance()->SetActiveFestivals(NativeFestival(festivals[0]), NativeFestival(festivals[1]), NativeFestival(festivals[2]), NativeFestival(festivals[3]), NativeFestival(festivals[4]), NativeFestival(festivals[5]), NativeFestival(festivals[6]), NativeFestival(festivals[7]));
         }
         else
         {
-            GameMain.Instance()->QueueActiveFestivals(festivals[0], festivals[1], festivals[2], festivals[3]);
+            GameMain.Instance()->QueueActiveFestivals(NativeFestival(festivals[0]), NativeFestival(festivals[1]), NativeFestival(festivals[2]), NativeFestival(festivals[3]), NativeFestival(festivals[4]), NativeFestival(festivals[5]), NativeFestival(festivals[6]), NativeFestival(festivals[7]));
         }
     }
 
